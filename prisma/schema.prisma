@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Genre {
+  id      Int     @id @default(autoincrement())
+  name    String
+  movie   Movie[] 
+}
+
+model Movie {
+  id             Int     @id @default(autoincrement())
+  name           String
+  image          String?
+  duration       Int
+  release_year   Int
+  genre          Genre? @relation(fields: [genre_id], references: [id])
+  genre_id       Int?
+  participants   Participant[]
+}
+
+model Participant {
+  id         Int    @id @default(autoincrement())
+  name       String
+  image      String
+  birth      String
+  actor      String
+  movie      Movie? @relation(fields: [movie_id], references: [id])
+  movie_id   Int?
+}
